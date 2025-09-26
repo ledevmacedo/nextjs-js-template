@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import { ModeToggle } from "@/components/ui/mode-toggle";
 
 export default function Home() {
   return (
@@ -8,6 +9,7 @@ export default function Home() {
         <Button>Clique aqui</Button>
         <Button variant="destructive">Botão vermelho</Button>
         <Button variant="outline">Botão outline</Button>
+        <ModeToggle />
       </div>
     </div>
   );
