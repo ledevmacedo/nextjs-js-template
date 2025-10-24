@@ -151,3 +151,4 @@ Teste realizado:
 1. Instalei o componente `mode-toggle.jsx` do ShadcnUI e importei na página inicial para validar a troca de tema.
 ![alt text](public/tutorial/1.gif)
 Exemplo commit
+Exemplo commit na minha branch!
