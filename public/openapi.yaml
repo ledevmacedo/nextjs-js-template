@@ -1,0 +1,150 @@
+openapi: 3.0.0
+info:
+  title: API de Usuários e Posts
+  version: 1.0.0
+  description: API para gerenciar usuários e posts.
+
+servers:
+  - url: /api
+
+paths:
+  /users:
+    get:
+      summary: Retorna uma lista de usuários
+      responses:
+        "200":
+          description: Uma lista de usuários.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+    post:
+      summary: Cria um novo usuário
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      responses:
+        "201":
+          description: Usuário criado com sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          description: Requisição inválida.
+
+  /posts:
+    get:
+      summary: Retorna uma lista de posts
+      responses:
+        "200":
+          description: Uma lista de posts.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Post"
+    post:
+      summary: Cria um novo post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostInput"
+      responses:
+        "201":
+          description: Post criado com sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Post"
+        "400":
+          description: Requisição inválida.
+
+security:
+  - bearerAuth: []
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        _id:
+          type: string
+          format: uuid
+          readOnly: true
+        username:
+          type: string
+          description: Nome de usuário
+          example: joaoSilva
+        email:
+          type: string
+          format: email
+          description: Endereço de e-mail do usuário
+          example: joao.silva@example.com
+      required:
+        - username
+        - email
+
+    Post:
+      type: object
+      properties:
+        _id:
+          type: string
+          format: uuid
+          readOnly: true
+        title:
+          type: string
+          description: Título do post
+          example: Meu Primeiro Post
+        content:
+          type: string
+          description: Conteúdo do post
+          example: Este é o conteúdo do meu primeiro post.
+        author:
+          type: string
+          format: uuid
+          description: ID do autor do post
+          example: 60c72b2f9b1d8c001c8e4b7a
+        createdAt:
+          type: string
+          format: date-time
+          description: Data e hora de criação do post
+          readOnly: true
+      required:
+        - title
+        - content
+        - author
+
+    PostInput:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Título do post
+          example: Meu Primeiro Post
+        content:
+          type: string
+          description: Conteúdo do post
+          example: Este é o conteúdo do meu primeiro post.
+        author:
+          type: string
+          format: uuid
+          description: ID do autor do post
+          example: 60c72b2f9b1d8c001c8e4b7a
+      required:
+        - title
+        - content
+        - author
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
