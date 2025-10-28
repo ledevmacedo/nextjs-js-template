@@ -98,6 +98,36 @@ paths:
         "400":
           description: Requisição inválida.
 
+  /posts/{id}:
+    get:
+      summary: Retorna um post específico pelo ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID único do post
+          schema:
+            type: string
+            format: uuid
+            example: 60c72b2f9b1d8c001c8e4b7b
+      responses:
+        "200":
+          description: Post encontrado com sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Post"
+        "404":
+          description: Post não encontrado.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Postagem não encontrado"
+
 components:
   schemas:
     User:
