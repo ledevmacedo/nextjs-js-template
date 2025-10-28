@@ -49,7 +49,7 @@ paths:
           schema:
             type: string
             format: uuid
-            example: 60c72b2f9b1d8c001c8e4b7a
+            example: 68fc0fd28318f76189c8dd91
       responses:
         "200":
           description: Usuário encontrado com sucesso.
@@ -109,7 +109,7 @@ paths:
           schema:
             type: string
             format: uuid
-            example: 60c72b2f9b1d8c001c8e4b7b
+            example: 6900ac8a6cb7a588ed6f9cd9
       responses:
         "200":
           description: Post encontrado com sucesso.
@@ -127,6 +127,28 @@ paths:
                   error:
                     type: string
                     example: "Postagem não encontrado"
+
+  /users/{id}/posts:
+    get:
+      summary: Retorna os posts de um usuário específico
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID único do usuário
+          schema:
+            type: string
+            format: uuid
+            example: 68fc0fd28318f76189c8dd91
+      responses:
+        "200":
+          description: Lista de posts do usuário.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Post"
 
 components:
   schemas:
