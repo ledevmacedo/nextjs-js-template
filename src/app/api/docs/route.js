@@ -7,4 +7,14 @@ const config = {
   proxyUrl: "https://proxy.scalar.com",
 };
 
-export const GET = ApiReference(config);
+export async function GET(request) {
+  const isDevelopment =
+    process.env.NODE_ENV === "development" &&
+    process.env.NODE_ENV !== "staging";
+  if (!isDevelopment) {
+    return new Response("Not found", { status: 404 });
+  }
+
+  const handler = ApiReference(config);
+  return handler(request);
+}
