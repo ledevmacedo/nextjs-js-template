@@ -7,10 +7,3 @@ export async function GET() {
   const users = await User.find();
   return NextResponse.json(users);
 }
-
-export async function POST(req) {
-  const data = await req.json();
-  await connectDB();
-  const newUser = await User.create(data);
-  return NextResponse.json(newUser, { status: 201 });
-}

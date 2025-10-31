@@ -20,23 +20,6 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/User"
-    post:
-      summary: Cria um novo usuário
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/User"
-      responses:
-        "201":
-          description: Usuário criado com sucesso.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/User"
-        "400":
-          description: Requisição inválida.
 
   /users/{id}:
     get:
