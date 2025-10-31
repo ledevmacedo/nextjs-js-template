@@ -150,6 +150,95 @@ paths:
                 items:
                   $ref: "#/components/schemas/Post"
 
+  /auth/register:
+    post:
+      summary: Registra um novo usuário
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserRegister"
+      responses:
+        "201":
+          description: Usuário registrado com sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserRegisterResponse"
+        "400":
+          description: Dados inválidos ou email já cadastrado.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Erro interno do servidor.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /auth/signin:
+    post:
+      summary: Autentica um usuário (NextAuth)
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  description: Endereço de e-mail do usuário
+                  example: maria.carvalho@example.com
+                password:
+                  type: string
+                  description: Senha do usuário
+                  example: minhasenha123
+                csrfToken:
+                  type: string
+                  description: Token CSRF do NextAuth
+              required:
+                - email
+                - password
+                - csrfToken
+      responses:
+        "200":
+          description: Login realizado com sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserLoginResponse"
+        "400":
+          description: Credenciais inválidas.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /auth/signout:
+    post:
+      summary: Desautentica um usuário (NextAuth)
+      responses:
+        "200":
+          description: Logout realizado com sucesso.
+
+  /auth/session:
+    get:
+      summary: Retorna a sessão atual do usuário (NextAuth)
+      responses:
+        "200":
+          description: Sessão encontrada.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserLoginResponse"
+        "401":
+          description: Usuário não autenticado.
+
 components:
   schemas:
     User:
@@ -159,6 +248,7 @@ components:
           type: string
           format: uuid
           readOnly: true
+          example: 68fc0fd28318f76189c8dd91
         name:
           type: string
           description: Nome do usuário
@@ -168,6 +258,36 @@ components:
           format: email
           description: Endereço de e-mail do usuário
           example: joao.silva@example.com
+        password:
+          type: string
+          description: Senha do usuário (hash)
+          readOnly: true
+          example: "$2a$12$..."
+        image:
+          type: string
+          description: URL da imagem do usuário
+          example: "https://example.com/avatar.jpg"
+        emailVerified:
+          type: string
+          format: date-time
+          description: Data de verificação do email
+          example: "2024-01-15T10:30:00Z"
+        role:
+          type: string
+          description: Papel/função do usuário
+          example: "user"
+        createdAt:
+          type: string
+          format: date-time
+          description: Data de criação do usuário
+          readOnly: true
+          example: "2024-01-15T10:30:00Z"
+        updatedAt:
+          type: string
+          format: date-time
+          description: Data da última atualização do usuário
+          readOnly: true
+          example: "2024-01-15T10:30:00Z"
       required:
         - name
         - email
@@ -236,3 +356,97 @@ components:
         - content
         - tags
         - author
+
+    UserRegister:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Nome do usuário
+          example: Maria Carvalho
+        email:
+          type: string
+          format: email
+          description: Endereço de e-mail do usuário
+          example: maria.carvalho@exemple.com
+        password:
+          type: string
+          minLength: 6
+          description: Senha do usuário (mínimo 6 caracteres)
+          example: minhasenha123
+        role:
+          type: string
+          description: Papel/função do usuário
+          example: "user"
+          default: "user"
+        image:
+          type: string
+          description: URL da imagem do usuário
+          example: "https://example.com/avatar.jpg"
+      required:
+        - name
+        - email
+        - password
+
+    UserRegisterResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Usuário criado com sucesso"
+        user:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              example: 68fc0fd28318f76189c8dd91
+            name:
+              type: string
+              example: João Silva
+            email:
+              type: string
+              format: email
+              example: maria.carvalho@example.com
+            image:
+              type: string
+              example: null
+            role:
+              type: string
+              example: "user"
+            createdAt:
+              type: string
+              format: date-time
+              example: "2024-01-15T10:30:00Z"
+
+    UserLoginResponse:
+      type: object
+      properties:
+        user:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              example: 68fc0fd28318f76189c8dd91
+            name:
+              type: string
+              example: João Silva
+            email:
+              type: string
+              format: email
+              example: joao.silva@example.com
+            image:
+              type: string
+              example: null
+            role:
+              type: string
+              example: "user"
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Mensagem de erro
+          example: "Email já cadastrado"
