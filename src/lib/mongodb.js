@@ -1,9 +1,10 @@
 import mongoose from "mongoose";
 
 const MONGODB_URI = process.env.MONGODB_URI;
+console.log("MONGODB_URI:", MONGODB_URI);
 
 if (!MONGODB_URI) {
-  throw new Error("Defina MONGODB_URI em .env.local");
+  throw new Error("Defina MONGODB_URI em .env");
 }
 
 let cached = global.mongoose || { conn: null, promise: null };
