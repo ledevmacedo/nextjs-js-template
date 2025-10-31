@@ -1,7 +1,7 @@
 import { MongoClient } from "mongodb";
 
 if (!process.env.MONGODB_URI) {
-  throw new Error("Adicione MONGODB_URI no .env.local");
+  throw new Error("Adicione MONGODB_URI no .env");
 }
 
 const uri = process.env.MONGODB_URI;

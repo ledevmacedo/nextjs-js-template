@@ -4,7 +4,6 @@ const config = {
   url: "/openapi.yaml",
   theme: "default", //default,moon,kepler
   layout: "classic",
-  proxyUrl: "https://proxy.scalar.com",
 };
 
 export async function GET(request) {

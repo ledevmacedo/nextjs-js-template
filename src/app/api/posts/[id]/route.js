@@ -4,7 +4,8 @@ import Post from "@/models/Post";
 
 export async function GET(request, { params }) {
   await connectDB();
-  const post = await Post.findById(params.id);
+  const { id } = await params;
+  const post = await Post.findById(id);
 
   if (!post) {
     return NextResponse.json(
