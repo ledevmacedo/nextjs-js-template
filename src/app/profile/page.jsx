@@ -32,6 +32,11 @@ export default async function ProfilePage() {
             <label className="text-sm font-medium text-muted-foreground">ID do Usuário</label>
             <p className="text-sm font-mono">{session.user.id}</p>
           </div>
+
+          <div>
+            <label className="text-sm font-medium text-muted-foreground">Role de Acesso</label>
+            <p className="text-sm font-mono">{session.user.role}</p>
+          </div>
         </div>
 
         <div className="flex gap-2">
