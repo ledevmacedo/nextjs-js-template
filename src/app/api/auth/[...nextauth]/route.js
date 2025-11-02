@@ -29,15 +29,20 @@ export const authOptions = {
         password: { label: "Senha", type: "password" },
       },
       async authorize(credentials) {
+        console.log("🔐 Tentativa de login com:", credentials?.email);
+        
         if (!credentials?.email || !credentials?.password) {
+          console.log("❌ Credenciais vazias");
           throw new Error("Email e senha são obrigatórios");
         }
 
         await connectDB();
 
         const user = await UserModel.findOne({ email: credentials.email });
+        console.log("👤 Usuário encontrado:", user ? "Sim" : "Não");
 
         if (!user || !user.password) {
+          console.log("❌ Usuário não encontrado ou sem senha");
           throw new Error("Credenciais inválidas");
         }
 
@@ -45,11 +50,14 @@ export const authOptions = {
           credentials.password,
           user.password
         );
+        console.log("🔑 Senha válida:", isValid);
 
         if (!isValid) {
+          console.log("❌ Senha incorreta");
           throw new Error("Credenciais inválidas");
         }
 
+        console.log("✅ Login bem-sucedido para:", user.email);
         return {
           id: user._id.toString(),
           name: user.name,
@@ -75,6 +83,7 @@ export const authOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
+        token.role = user.role;
       }
       return token;
     },
@@ -82,6 +91,7 @@ export const authOptions = {
     async session({ session, token }) {
       if (token && session.user) {
         session.user.id = token.id;
+        session.user.role = token.role;
       }
       return session;
     },
