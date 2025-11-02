@@ -4,6 +4,7 @@ import CopyButton from "@/components/originUI/copyButton";
 import Link from "next/link";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { LogoutButton } from "@/components/auth/LogoutButton";
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
@@ -16,9 +17,7 @@ export default async function Home() {
             <h1 className="text-2xl font-bold">Bem-vindo, {session.user.name}!</h1>
             <p className="text-muted-foreground">Email: {session.user.email}</p>
             <div className="flex gap-2 justify-center">
-              <Link href="/api/auth/signout">
-                <Button variant="destructive">Sair</Button>
-              </Link>
+              <LogoutButton />
               <ModeToggle />
             </div>
           </div>

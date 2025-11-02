@@ -3,6 +3,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { LogoutButton } from "@/components/auth/LogoutButton";
 
 export default async function ProfilePage() {
   const session = await getServerSession(authOptions);
@@ -37,9 +38,7 @@ export default async function ProfilePage() {
           <Link href="/">
             <Button variant="outline">Voltar</Button>
           </Link>
-          <Link href="/api/auth/signout">
-            <Button variant="destructive">Sair</Button>
-          </Link>
+          <LogoutButton />
         </div>
       </div>
     </div>
